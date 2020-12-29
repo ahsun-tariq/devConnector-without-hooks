@@ -115,7 +115,7 @@ try {
   
 } catch (error) {
   console.log(err.message);
-  res.status(500).send("Server Errod")
+  res.status(500).send("Server Error")
 }
 })
 
@@ -208,5 +208,25 @@ async (req,res)=>{
     res.status(500).send("Server Error");
   }
 });
+
+//@route DELETE api/profile/experience
+//@desc delete profile experience
+//@access Private
+
+router.delete("/experience/:exp_id",auth,async (req, res)=>{
+  try {
+
+    const profile =  await Profile.findOne({user:req.user.id});
+    profile.experience = profile.experience.filter(xp => xp._id != req.params.exp_id)
+    console.log(profile.experience);
+    const updatedProfile = await Profile.findOneAndUpdate({user:req.user.id},{$set:profile},{new:true})
+
+    res.json({msg:updatedProfile});
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+})
 
 module.exports = router;
