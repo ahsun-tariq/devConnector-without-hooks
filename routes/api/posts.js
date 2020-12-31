@@ -5,6 +5,7 @@ const auth = require("../../middleware/auth");
 const User = require("../../models/User");
 const Post = require("../../models/Post");
 const Profile = require("../../models/Profile");
+const { request } = require("express");
 
 //@route POST api/post
 //@desc Create a post
@@ -95,14 +96,17 @@ router.delete("/:id",auth,async (req,res)=>{
   try {
 
     const post = await Post.findById(req.params.id);
+
+
+    if(!post){
+      return res.status(404).json({msg:"post not found"});
+    }
+
     //Check user
     if(post.user.toString() !== req.user.id){
       return res.status(401).json({msg:"User not authorised"});
     }
     
-    if(!post){
-      return res.status(404).json({msg:"post not found"});
-    }
 
     await post.remove();
     res.json({msg:"Post removed"})
@@ -115,10 +119,124 @@ router.delete("/:id",auth,async (req,res)=>{
     res.status(500).send({msg:"Server Error"});
 
   }
-
-
 })
 
+//@route PUT api/posts/like/:id
+//@desc Like a post
+//@access Private
+router.put("/like/:id",auth,async (req,res)=>{
+  try {
+    let post = await Post.findById(req.params.id);
+    
+    if(!post){
+      return res.status(404).json({msg:"post not found"});
+    }
+    //Check if post has been liked by user
+    if(post.likes.filter(like => like.user.toString()===req.user.id).length >0)
+      return res.status(400).json({msg:"post has been already liked by user"})
+    
+    post.likes.unshift({user:req.user.id});
+
+    post = await post.save();
+    res.json(post.likes)
+
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send("Server Error")
+  }
+});
+
+//@route PUT api/posts/unlike/:id
+//@desc unlike a post
+//@access Private
+router.put("/unlike/:id",auth, async (req,res)=>{
+  try {
+    let post = await Post.findById(req.params.id);
+    
+    //Check if post has not been liked by user
+    if(post.likes.filter(like => like.user.toString() ===req.user.id).length==0){
+        return res.status(400).json({msg:"post has not been liked by user"})
+    }
+      
+    post.likes = post.likes.filter(like => like.user.toString()!==req.user.id);
+    await post.save();
+    res.json(post.likes);
+
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send("Server Error")
+  }
+});
+
+//@route POST api/posts/comment
+//@desc Comment on a post
+//@access Private
+router.post("/comment/:id",[auth,[
+  check("text","Text is required").not().isEmpty()
+]],async (req,res)=>{
+  const errors = validationResult(req);
+  if(!errors.isEmpty()){
+    return res.status(400).json({errors: errors.array()})
+  }
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    let post = await Post.findById(req.params.id)
+
+    if(!post){
+      return res.status(404).json({msg:"post not found"})
+    }
+
+    const newComment = {
+      text : req.body.text,
+      name: user.name,
+      avatar: user.avatar,
+      user: req.user.id
+    }
+    post.comments.unshift(newComment);
+    await post.save();
+    res.json(post.comments);
+
+
+  } catch (err) {
+     console.error(err.message)
+     res.status(500).send("Server Error")
+  }
+})
+
+//@route DELETE api/posts/comment/:id/:commend_id
+//@desc Delete comment
+//@access Private
+router.delete("/comment/:id/:comment_id",auth,async (req,res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+
+    if(!post){
+        return res.status(404).json({msg:"Post does not exist"})
+    }
+
+    //Get comment
+    const comment = post.comments.find(comment => comment.id === req.params.comment_id);
+  
+    //make sure if comment exists
+    if(!comment){
+      return res.status(404).json({msg:"Comment does not exist"})
+    }
+    //Check User
+    if(comment.user.toString()!==req.user.id){
+      return res.status(401).json({msg:"User not authorised"})
+    }
+
+    post.comments = post.comments.filter(item => item.id != req.params.comment_id);
+
+    await post.save();
+
+    res.json(post.comments);
+    
+  } catch (err) {
+    console.error(err.message)
+    res.status(500).send("Server Error")
+  }
+})
 
 
 module.exports = router;
