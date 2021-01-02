@@ -16,7 +16,7 @@ class Navbar extends Component {
     const authLinks = (
       <ul>
         <li>
-          <a onClick={this.props.logout} href="#!">
+          <a onClick={this.props.logout} href="">
             <i className="fas fa-signout-alt" />{" "}
             <span className="hide-sm">Logout</span>
           </a>
