@@ -15,3 +15,4 @@ export const CLEAR_DATA = "CLEAR_DATA";
 
 export const GET_PROFILE = "GET_PROFILE";
 export const PROFILE_ERROR = "PROFILE_ERROR";
+export const UPDATE_PROFILE = "UPDATE_PROFILE";

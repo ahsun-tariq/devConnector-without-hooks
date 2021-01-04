@@ -7,7 +7,9 @@ import Landing from "./components/layout/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Dashboard from "./components/dashboard/Dashboard";
+import AddEducation from "./components/profile-forms/AddEducation";
 import CreateProfile from "./components/profile-forms/CreateProfile";
+import AddExperience from "./components/profile-forms/AddExperience";
 import EditProfile from "./components/profile-forms/EditProfile";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -47,6 +49,16 @@ class App extends Component {
                   exact
                   path="/edit-profile"
                   component={EditProfile}
+                />
+                <PrivateRoute
+                  exact
+                  path="/add-experience"
+                  component={AddExperience}
+                />
+                <PrivateRoute
+                  exact
+                  path="/add-education"
+                  component={AddEducation}
                 />
               </Switch>
             </section>
