@@ -6,6 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CLEAR_DATA,
 } from "../actions/types";
 
 const initialState = {
@@ -44,6 +45,13 @@ export default function register(state = initialState, action) {
         ...state,
         token: null,
         isAuthenticated: false,
+        loading: false,
+      };
+    case CLEAR_DATA:
+      return {
+        ...state,
+        profile: null,
+        repos: [],
         loading: false,
       };
     default:

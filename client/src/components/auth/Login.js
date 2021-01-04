@@ -28,13 +28,13 @@ class Login extends Component {
     e.preventDefault();
     const { email, password } = state;
     props.login(email, password);
-    console.log(state);
+    // console.log(state);
   }
 
   render() {
     //redirect if logged in
     if (this.props.isAuthenticated) {
-      return <Redirect to="/dashboard" />;
+      return <Redirect to={"/dashboard"} />;
     }
     return (
       <Fragment>

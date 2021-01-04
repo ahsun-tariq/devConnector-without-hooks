@@ -1,8 +1,15 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-
-export class Landing extends Component {
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+class Landing extends Component {
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+  };
   render() {
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/dashboard" />;
+    }
     return (
       <div>
         <section className="landing">
@@ -29,4 +36,8 @@ export class Landing extends Component {
   }
 }
 
-export default Landing;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps)(Landing);
