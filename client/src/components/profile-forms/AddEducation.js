@@ -118,7 +118,7 @@ class AddEducation extends Component {
                     this.toggleDisable(e, this.state);
                   }}
                 />{" "}
-                Current Job
+                Current
               </p>
             </div>
             <div className="form-group">

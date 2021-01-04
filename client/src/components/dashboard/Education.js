@@ -2,10 +2,12 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Moment from "react-moment";
+import { deleteEducation } from "../../actions/profile";
 
-export default class Education extends Component {
+class Education extends Component {
   static propTypes = {
     education: PropTypes.array.isRequired,
+    deleteEducation: PropTypes.func.isRequired,
   };
   constructor(props) {
     super(props);
@@ -24,7 +26,12 @@ export default class Education extends Component {
           )}
         </td>
         <td>
-          <button className="btn btn-danger">Delete</button>
+          <button
+            className="btn btn-danger"
+            onClick={(e) => this.props.deleteEducation(ed._id)}
+          >
+            Delete
+          </button>
         </td>
       </tr>
     ));
@@ -46,3 +53,5 @@ export default class Education extends Component {
     );
   }
 }
+
+export default connect(null, { deleteEducation })(Education);
