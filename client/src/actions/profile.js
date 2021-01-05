@@ -59,11 +59,11 @@ export function getProfiles() {
 
 //Get profile by id
 export function getProfileByID(userID) {
-  return async function (dispatch, getState) {
+  return async function (dispatch) {
     try {
       const res = await axios.get(`/api/profile/user/${userID}`);
       dispatch({
-        type: GET_PROFILES,
+        type: GET_PROFILE,
         payload: res.data,
       });
     } catch (err) {
