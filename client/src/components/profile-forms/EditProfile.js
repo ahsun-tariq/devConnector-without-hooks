@@ -29,7 +29,7 @@ class EditProfile extends Component {
       linkedIn: "",
       youtube: "",
       instagram: "",
-
+      isEmpty: true,
       displaySocialInputs: false,
     };
   }
@@ -55,12 +55,15 @@ class EditProfile extends Component {
   //     };
   //   }
   // }
-  componentDidMount() {
+
+  componentWillMount() {
     this.props.getCurrentProfile();
+  }
+
+  componentDidUpdate() {
     const { profile } = this.props.profile;
     const { loading } = this.props.profile;
-
-    if (!loading || profile !== null) {
+    if (!loading && profile !== null && this.state.isEmpty) {
       this.setState({
         company: !profile.company ? "" : profile.company,
         website: !profile.website ? "" : profile.website,
@@ -74,6 +77,7 @@ class EditProfile extends Component {
         linkedIn: !profile.social.linkedIn ? "" : profile.social.linkedIn,
         youtube: !profile.social.youtube ? "" : profile.social.youtube,
         instagram: !profile.social.instagram ? "" : profile.social.instagram,
+        isEmpty: false,
       });
     }
   }

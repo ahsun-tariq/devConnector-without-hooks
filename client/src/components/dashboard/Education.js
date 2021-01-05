@@ -14,7 +14,7 @@ class Education extends Component {
   }
   render() {
     const edu = this.props.education.map((ed) => (
-      <tr key={ed._id}>
+      <tr key={ed._id} className="bg-primary">
         {ed.school}
         <td className="hide-sm">{ed.degree}</td>
         <td>
@@ -38,9 +38,9 @@ class Education extends Component {
     return (
       <Fragment>
         <h2 className="my-2">Education Credentials</h2>
-        <table className="table table-striped table-dark">
-          <thead className="thead-dark">
-            <tr>
+        <table className="table table-striped table-light">
+          <thead className="thead-light">
+            <tr className="bg-primary">
               <th>School</th>
               <th className="hide-sm">Degree</th>
               <th className="hide-sm">Years</th>

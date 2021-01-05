@@ -7,16 +7,14 @@ import {
   UPDATE_PROFILE,
   CLEAR_DATA,
   ACCOUNT_DELETED,
+  GET_PROFILES,
+  GET_REPOS,
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 import { tokenConfig } from "./auth";
-//Get current users profile
 
+//Get current users profile
 export function getCurrentProfile() {
-  // if (localStorage.token) {
-  //   setAuthToken(localStorage.token);
-  //   console.log(localStorage.token);
-  // }
   return async function (dispatch, getState) {
     try {
       const res = await axios.get("/api/profile/me", tokenConfig(getState));
@@ -31,6 +29,70 @@ export function getCurrentProfile() {
         payload: {
           msg: err.response.statusText,
           status: err.response.status,
+        },
+      });
+    }
+  };
+}
+
+//Get all profiles
+export function getProfiles() {
+  return async function (dispatch, getState) {
+    try {
+      // dispatch({ type: CLEAR_DATA });
+      const res = await axios.get("/api/profile");
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.statusText,
+        },
+      });
+    }
+  };
+}
+
+//Get profile by id
+export function getProfileByID(userID) {
+  return async function (dispatch, getState) {
+    try {
+      const res = await axios.get(`/api/profile/user/${userID}`);
+      dispatch({
+        type: GET_PROFILES,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.statusText,
+        },
+      });
+    }
+  };
+}
+
+//Get Github Repos
+export function getGithubRepos(username) {
+  return async function (dispatch) {
+    try {
+      const res = await axios.get(`/api/profile/github/${username}`);
+      dispatch({
+        type: GET_REPOS,
+        payload: res.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.statusText,
         },
       });
     }

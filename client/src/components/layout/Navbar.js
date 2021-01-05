@@ -16,6 +16,9 @@ class Navbar extends Component {
     const authLinks = (
       <ul>
         <li>
+          <Link to="/profiles">Developers</Link>
+        </li>
+        <li>
           <Link to="/dashboard">
             <i className="fa fa-user" /> Dashboard
           </Link>
@@ -32,8 +35,9 @@ class Navbar extends Component {
     const guestLinks = (
       <ul>
         <li>
-          <Link to="!#">Developers</Link>
+          <Link to="/profiles">Developers</Link>
         </li>
+
         <li>
           <Link to="/register">Register</Link>
         </li>

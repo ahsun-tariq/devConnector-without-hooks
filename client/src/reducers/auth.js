@@ -48,13 +48,7 @@ export default function register(state = initialState, action) {
         isAuthenticated: false,
         loading: false,
       };
-    case CLEAR_DATA:
-      return {
-        ...state,
-        profile: null,
-        repos: [],
-        loading: false,
-      };
+
     default:
       return state;
   }

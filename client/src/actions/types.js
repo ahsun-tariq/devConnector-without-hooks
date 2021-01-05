@@ -16,5 +16,7 @@ export const CLEAR_DATA = "CLEAR_DATA";
 export const GET_PROFILE = "GET_PROFILE";
 export const PROFILE_ERROR = "PROFILE_ERROR";
 export const UPDATE_PROFILE = "UPDATE_PROFILE";
+export const GET_PROFILES = "GET_PROFILES";
+export const GET_REPOS = "GET_REPOS";
 
 export const ACCOUNT_DELETED = "DELETE_ACCOUNT";
