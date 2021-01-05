@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
 import { getProfiles } from "../../actions/profile";
 import ProfileItem from "./ProfileItem";
-import { JsonWebTokenError } from "jsonwebtoken";
+
 class Profiles extends Component {
   static propTypes = {
     getProfiles: PropTypes.func.isRequired,

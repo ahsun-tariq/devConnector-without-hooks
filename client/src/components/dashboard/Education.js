@@ -9,9 +9,9 @@ class Education extends Component {
     education: PropTypes.array.isRequired,
     deleteEducation: PropTypes.func.isRequired,
   };
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
   render() {
     const edu = this.props.education.map((ed) => (
       <tr key={ed._id} className="bg-primary">

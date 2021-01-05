@@ -7,9 +7,9 @@ class Alert extends Component {
     alerts: PropTypes.array.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     const alerts = this.props.alerts;

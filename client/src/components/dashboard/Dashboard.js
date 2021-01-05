@@ -17,9 +17,9 @@ class Dashboard extends Component {
     deleteAccount: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   componentDidMount() {
     this.props.getCurrentProfile();

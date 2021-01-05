@@ -9,9 +9,9 @@ class Experience extends Component {
     experience: PropTypes.array.isRequired,
     deleteExperience: PropTypes.func.isRequired,
   };
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     const experiences = this.props.experience.map((exp) => (

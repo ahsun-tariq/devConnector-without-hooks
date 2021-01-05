@@ -10,7 +10,7 @@ import {
   GET_PROFILES,
   GET_REPOS,
 } from "./types";
-import setAuthToken from "../utils/setAuthToken";
+
 import { tokenConfig } from "./auth";
 
 //Get current users profile
@@ -256,16 +256,10 @@ export function deleteAccount() {
         });
 
         dispatch({
-          type: CLEAR_DATA,
-        });
-
-        dispatch({
           type: ACCOUNT_DELETED,
         });
 
-        dispatch(
-          setAlert("Your Account has been permanently deleted", "warning")
-        );
+        dispatch(setAlert(res.data, "warning"));
       } catch (err) {
         const errors = err.response.data.errors;
         if (errors) {

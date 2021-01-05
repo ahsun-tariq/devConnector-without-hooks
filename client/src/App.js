@@ -16,7 +16,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import Alert from "./components/layout/Alert";
 import { loadUser } from "./actions/auth";
-import setAuthToken from "./utils/setAuthToken";
+
 import "bootstrap/dist/css/bootstrap.css";
 class App extends Component {
   constructor(props) {
