@@ -38,7 +38,8 @@ class ProfileGithub extends Component {
     const { repos } = this.state;
     if (repos) console.log(repos.length);
     return (
-      <Fragment>
+      <div className="profile-github">
+        <h2 className="text-primary my-1">Github Repos</h2>
         {loading ? (
           <Spinner />
         ) : (
@@ -47,16 +48,38 @@ class ProfileGithub extends Component {
               <p>No repos found</p>
             ) : (
               <Fragment>
-                <ul>
-                  {repos.map((repo, index) => (
-                    <li key={index}>{JSON.stringify(repo)}</li>
-                  ))}
-                </ul>
+                {repos.map((repo, index) => (
+                  <div key={index} className="repo bg-white p-1 my-1">
+                    <h4>
+                      <a
+                        href={repo.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {repo.name}
+                      </a>
+                    </h4>
+                    <p>{repo.description}</p>
+                    <div>
+                      <ul>
+                        <li className="badge badge-primary">
+                          Stars:{repo.stargazers_count}
+                        </li>
+                        <li className="badge badge-dark">
+                          Watchers:{repo.watchers_count}
+                        </li>
+                        <li className="badge badge-light">
+                          Stars:{repo.forks_count}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                ))}
               </Fragment>
             )}
           </Fragment>
         )}
-      </Fragment>
+      </div>
     );
   }
 }
