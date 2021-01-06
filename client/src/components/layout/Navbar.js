@@ -24,6 +24,11 @@ class Navbar extends Component {
           </Link>
         </li>
         <li>
+          <Link to="/posts">
+            <i className="fa fa-pencil" /> Posts
+          </Link>
+        </li>
+        <li>
           <a onClick={this.props.logout} href="">
             <i className="fa fa-sign-out" />{" "}
             <span className="hide-sm">Logout</span>
