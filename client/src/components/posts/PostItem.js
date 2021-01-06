@@ -3,11 +3,15 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { connect } from "react-redux";
+import { addLike, removeLike } from "../../actions/post";
+import Spinner from "../layout/Spinner";
 
 class PostItem extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
+    addLike: PropTypes.func.isRequired,
+    removeLike: PropTypes.func.isRequired,
   };
 
   render() {
@@ -34,13 +38,24 @@ class PostItem extends Component {
           <p className="post-date">
             Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
           </p>
-          <button type="button" className="btn btn-light">
+          <button
+            onClick={(e) => {
+              this.props.addLike(_id);
+            }}
+            type="button"
+            className="btn btn-light"
+          >
             <i className="fa fa-thumbs-up"> </i>
             {likes.length > 0 && <span>{likes.length}</span>}
           </button>
-          <button type="button" className="btn btn-light">
+          <button
+            onClick={(e) => {
+              this.props.removeLike(_id);
+            }}
+            type="button"
+            className="btn btn-light"
+          >
             <i className="fa fa-thumbs-down"></i>
-            {likes.length > 0 && <span>{likes.length}</span>}
           </button>
           <Link to={`/post/${_id}`} className="btn btn-primary">
             Discussion
@@ -63,4 +78,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, {})(PostItem);
+export default connect(mapStateToProps, { addLike, removeLike })(PostItem);

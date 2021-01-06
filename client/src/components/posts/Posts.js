@@ -1,17 +1,21 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getPosts } from "../../actions/post";
+import { connect, shallowEqual } from "react-redux";
+import { getPosts, fetchUpdatedPosts } from "../../actions/post";
 import Spinner from "../layout/Spinner";
 import PostItem from "./PostItem";
+import equal from "fast-deep-equal";
 class Posts extends Component {
   static propTypes = {
     getPosts: PropTypes.func.isRequired,
+    fetchUpdatedPosts: PropTypes.func.isRequired,
     post: PropTypes.object.isRequired,
+    posts: PropTypes.array.isRequired,
   };
 
   constructor(props) {
     super(props);
+
     this.state = {
       posts: null,
       loading: true,
@@ -25,17 +29,16 @@ class Posts extends Component {
   componentDidUpdate() {
     if (!this.props.post.loading && this.state.loading) {
       this.setState({
-        posts: this.props.post.posts,
+        posts: this.props.posts,
         loading: false,
       });
     }
   }
 
   render() {
-    const { loading, posts } = this.state;
     return (
       <Fragment>
-        {loading ? (
+        {this.props.post.loading ? (
           <Spinner />
         ) : (
           <Fragment>
@@ -44,10 +47,12 @@ class Posts extends Component {
               <i className="fa fa-user"></i> Welcome to the community
             </p>
             <div className="posts">
-              {posts.length < 1 ? (
+              {this.props.posts.length < 1 ? (
                 <p>No posts found</p>
               ) : (
-                posts.map((post) => <PostItem key={post._id} post={post} />)
+                this.props.posts.map((post) => (
+                  <PostItem key={post._id} post={post} />
+                ))
               )}
             </div>
           </Fragment>
@@ -59,6 +64,7 @@ class Posts extends Component {
 
 const mapStateToProps = (state) => ({
   post: state.post,
+  posts: state.post.posts,
 });
 
-export default connect(mapStateToProps, { getPosts })(Posts);
+export default connect(mapStateToProps, { getPosts, fetchUpdatedPosts })(Posts);
