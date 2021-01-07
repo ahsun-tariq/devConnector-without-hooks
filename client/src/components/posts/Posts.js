@@ -4,7 +4,7 @@ import { connect, shallowEqual } from "react-redux";
 import { getPosts, fetchUpdatedPosts } from "../../actions/post";
 import Spinner from "../layout/Spinner";
 import PostItem from "./PostItem";
-import equal from "fast-deep-equal";
+import PostForm from "./PostForm";
 class Posts extends Component {
   static propTypes = {
     getPosts: PropTypes.func.isRequired,
@@ -46,6 +46,7 @@ class Posts extends Component {
             <p className="lead">
               <i className="fa fa-user"></i> Welcome to the community
             </p>
+            <PostForm />
             <div className="posts">
               {this.props.posts.length < 1 ? (
                 <p>No posts found</p>

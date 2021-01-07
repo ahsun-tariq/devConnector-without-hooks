@@ -1,11 +1,13 @@
 import axios from "axios";
-import { SET_ALERT } from "./alert";
+import { setAlert } from "./alert";
 import {
   GET_POSTS,
   GET_POST,
   GET_PROFILE,
   POST_ERROR,
   UPDATE_LIKES,
+  DELETE_POST,
+  ADD_POST,
 } from "./types";
 import { tokenConfig } from "./auth";
 import equal from "fast-deep-equal";
@@ -30,7 +32,6 @@ export function getPosts() {
 
 //Add Like
 export function addLike(postID) {
-  console.log(postID);
   return async function (dispatch, getState) {
     try {
       const res = await axios.put(
@@ -101,6 +102,70 @@ export function getPostByID(postID) {
       dispatch({
         type: POST_ERROR,
         payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  };
+}
+
+//Delete Post
+export function deletePost(postID) {
+  return async function (dispatch, getState) {
+    try {
+      const res = await axios.delete(
+        `/api/posts/${postID}`,
+        tokenConfig(getState)
+      );
+      dispatch({
+        type: DELETE_POST,
+        payload: { id: postID },
+      });
+      console.log(res);
+      dispatch(setAlert(res.data.msg, "success"));
+    } catch (err) {
+      dispatch({
+        type: POST_ERROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.status,
+        },
+      });
+    }
+  };
+}
+
+//Add a post
+
+export function addPost(formData) {
+  console.log(formData);
+  return async function (dispatch, getState) {
+    try {
+      const res = await axios.post(
+        "/api/posts",
+        formData,
+        tokenConfig(getState)
+      );
+      dispatch({
+        type: ADD_POST,
+        payload: res.data,
+      });
+
+      dispatch(setAlert("post created", "success"));
+    } catch (err) {
+      // const errors = null;
+      // if (err.response.data.errors) {
+      //   const errors = err.response.data.errors;
+      // }
+
+      // if (errors) {
+      //   console.log(errors);
+      //   errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      // }
+      dispatch({
+        type: POST_ERROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.status,
+        },
       });
     }
   };
