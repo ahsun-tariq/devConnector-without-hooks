@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://ahsun:Ahsun123@cluster0.stbyp.mongodb.net/<dbname>?retryWrites=true&w=majority",
+  "jwtSecret": "jwt123",
+  "githubClientID": "be200221fa25d29f050d",
+  "githubClientSecret": "f272209ec4f2d78840a231c53457a45e73e65b22"
+}
