@@ -8,6 +8,8 @@ import {
   UPDATE_LIKES,
   DELETE_POST,
   ADD_POST,
+  ADD_COMMENT,
+  REMOVE_COMMENT,
 } from "./types";
 import { tokenConfig } from "./auth";
 import equal from "fast-deep-equal";
@@ -134,9 +136,7 @@ export function deletePost(postID) {
 }
 
 //Add a post
-
 export function addPost(formData) {
-  console.log(formData);
   return async function (dispatch, getState) {
     try {
       const res = await axios.post(
@@ -151,15 +151,77 @@ export function addPost(formData) {
 
       dispatch(setAlert("post created", "success"));
     } catch (err) {
-      // const errors = null;
-      // if (err.response.data.errors) {
-      //   const errors = err.response.data.errors;
-      // }
+      const errors = err.response.data.errors;
 
-      // if (errors) {
-      //   console.log(errors);
-      //   errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
-      // }
+      if (errors) {
+        console.log(errors);
+        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      }
+      dispatch({
+        type: POST_ERROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.status,
+        },
+      });
+    }
+  };
+}
+
+//Add comment
+export function addComment(formData, postID) {
+  return async function (dispatch, getState) {
+    try {
+      const res = await axios.post(
+        `/api/posts/comment/${postID}`,
+        formData,
+        tokenConfig(getState)
+      );
+      dispatch({
+        type: ADD_COMMENT,
+        payload: res.data,
+      });
+
+      dispatch(setAlert("Comment Added", "success"));
+    } catch (err) {
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      }
+      dispatch({
+        type: POST_ERROR,
+        payload: {
+          msg: err.response.statusText,
+          status: err.response.status,
+        },
+      });
+
+      dispatch(setAlert(err.response.statusText, "danger"));
+    }
+  };
+}
+
+//Delete comment
+export function deleteComment(postID, commentID) {
+  return async function (dispatch, getState) {
+    try {
+      const res = await axios.delete(
+        `/api/posts/comment/${postID}/${commentID}`,
+        tokenConfig(getState)
+      );
+      dispatch({
+        type: REMOVE_COMMENT,
+        payload: res.data,
+      });
+
+      dispatch(setAlert("Comment Removed", "success"));
+    } catch (err) {
+      const errors = err.response.data.errors;
+
+      if (errors) {
+        console.log(errors);
+        errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      }
       dispatch({
         type: POST_ERROR,
         payload: {

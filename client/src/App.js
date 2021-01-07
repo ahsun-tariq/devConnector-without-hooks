@@ -14,6 +14,7 @@ import EditProfile from "./components/profile-forms/EditProfile";
 import Profiles from "./components/profiles/Profiles";
 import Profile from "./components/profile/Profile";
 import Posts from "./components/posts/Posts";
+import Post from "./components/post/Post";
 import { Provider } from "react-redux";
 import store from "./store";
 import Alert from "./components/layout/Alert";
@@ -70,6 +71,7 @@ class App extends Component {
                   path="/add-education"
                   component={AddEducation}
                 />
+                <PrivateRoute exact path="/posts/:id" component={Post} />
               </Switch>
             </section>
           </Fragment>

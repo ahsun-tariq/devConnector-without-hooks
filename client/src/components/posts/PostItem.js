@@ -15,6 +15,10 @@ class PostItem extends Component {
     deletePost: PropTypes.func.isRequired,
   };
 
+  static defaultProps = {
+    showActions: true,
+  };
+
   render() {
     const {
       _id,
@@ -26,6 +30,7 @@ class PostItem extends Component {
       comments,
       date,
     } = this.props.post;
+    const { showActions } = this.props;
     return (
       <div className="post bg-white p-1 my-1">
         <div>
@@ -39,41 +44,47 @@ class PostItem extends Component {
           <p className="post-date">
             Posted on <Moment format="YYYY/MM/DD">{date}</Moment>
           </p>
-          <button
-            onClick={(e) => {
-              this.props.addLike(_id);
-            }}
-            type="button"
-            className="btn btn-light"
-          >
-            <i className="fa fa-thumbs-up"> </i>
-            {likes.length > 0 && <span>{likes.length}</span>}
-          </button>
-          <button
-            onClick={(e) => {
-              this.props.removeLike(_id);
-            }}
-            type="button"
-            className="btn btn-light"
-          >
-            <i className="fa fa-thumbs-down"></i>
-          </button>
-          <Link to={`/post/${_id}`} className="btn btn-primary">
-            Discussion
-            {comments.length > 0 && (
-              <span className="comment-count">{comments.length}</span>
-            )}
-          </Link>
-          {this.props.auth.isAuthenticated &&
-            this.props.auth.user.user._id === user && (
+
+          {showActions && (
+            <Fragment>
+              {" "}
               <button
+                onClick={(e) => {
+                  this.props.addLike(_id);
+                }}
                 type="button"
-                className="btn btn-danger"
-                onClick={(e) => this.props.deletePost(_id)}
+                className="btn btn-light"
               >
-                <i className="fa fa-times"></i>
+                <i className="fa fa-thumbs-up"> </i>
+                {likes.length > 0 && <span>{likes.length}</span>}
               </button>
-            )}
+              <button
+                onClick={(e) => {
+                  this.props.removeLike(_id);
+                }}
+                type="button"
+                className="btn btn-light"
+              >
+                <i className="fa fa-thumbs-down"></i>
+              </button>
+              <Link to={`/posts/${_id}`} className="btn btn-primary">
+                Discussion
+                {comments.length > 0 && (
+                  <span className="comment-count">{comments.length}</span>
+                )}
+              </Link>
+              {this.props.auth.isAuthenticated &&
+                this.props.auth.user.user._id === user && (
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={(e) => this.props.deletePost(_id)}
+                  >
+                    <i className="fa fa-times"></i>
+                  </button>
+                )}
+            </Fragment>
+          )}
         </div>
       </div>
     );
