@@ -4,10 +4,26 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 class Landing extends Component {
   static propTypes = {
-    isAuthenticated: PropTypes.bool,
+    auth: PropTypes.object.isRequired,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAuthenticated: false,
+    };
+  }
+
+  componentWillReceiveProps(props) {
+    if (!props.auth.loading && props.auth.isAuthenticated) {
+      this.setState({
+        isAuthenticated: true,
+      });
+    }
+  }
+
   render() {
-    if (this.props.isAuthenticated) {
+    if (this.state.isAuthenticated) {
       return <Redirect to="/dashboard" />;
     }
     return (
@@ -37,7 +53,7 @@ class Landing extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps)(Landing);
