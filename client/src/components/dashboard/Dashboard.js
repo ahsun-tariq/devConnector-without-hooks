@@ -17,22 +17,38 @@ class Dashboard extends Component {
     deleteAccount: PropTypes.func.isRequired,
   };
 
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      profile: {},
+      loading: true,
+      user: {},
+    };
+  }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getCurrentProfile();
   }
 
-  render() {
-    const { profile, loading } = this.props.profile;
-    const { isAuthenticated } = this.props.auth;
+  componentWillReceiveProps(props) {
+    if (!props.profile.loading && props.auth.isAuthenticated) {
+      this.setState({
+        profile: props.profile.profile,
+        loading: false,
+        user: props.auth.user.user,
+      });
+    }
+  }
 
-    if (loading || !isAuthenticated || !this.props.auth.user) {
+  render() {
+    // const { profile, loading } = this.props.profile;
+    // const { isAuthenticated } = this.props.auth;
+    const { loading, profile, user } = this.state;
+
+    if (loading) {
       return <Spinner />;
     } else {
-      const { user } = this.props.auth.user;
+      // const { user } = this.props.auth.user;
       return (
         <Fragment>
           <h1 className="large text-primary">Dashboard</h1>
