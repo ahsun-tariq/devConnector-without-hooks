@@ -26,16 +26,20 @@ class Dashboard extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getCurrentProfile();
   }
 
   componentWillReceiveProps(props) {
-    if (!props.profile.loading && props.auth.isAuthenticated) {
+    if (
+      !props.profile.loading &&
+      props.auth.isAuthenticated &&
+      props.auth.user.user
+    ) {
       this.setState({
         profile: props.profile.profile,
-        loading: false,
         user: props.auth.user.user,
+        loading: false,
       });
     }
   }
