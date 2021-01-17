@@ -34,7 +34,7 @@ class Dashboard extends Component {
     if (
       !props.profile.loading &&
       props.auth.isAuthenticated &&
-      props.auth.user.user
+      props.auth.user.user !== null
     ) {
       this.setState({
         profile: props.profile.profile,
